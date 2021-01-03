@@ -1,0 +1,12 @@
+asgiref==3.2.10
+Django==1.11.7
+django-haystack==2.8.1
+django-pure-pagination==0.3.0
+importlib-metadata==1.7.0
+jieba==0.39
+Markdown==2.6.11
+PyMySQL==0.9.3
+pytz==2020.1
+sqlparse==0.3.1
+Whoosh==2.7.4
+zipp==3.1.0
