@@ -136,6 +136,19 @@
                             标签
                           </a>
                         </li>
+						
+						<li
+						    {% if request.path|slice:"5" == '/tags' %}
+						    class="menu-item menu-item-home menu-item-active" 
+						    {% else %}
+						    class="menu-item menu-item-active"
+						    {% endif %}
+						    style="opacity: 1; transform: translateY(0px);">
+						  <a href="music/" rel="section">
+						      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+						    音乐
+						  </a>
+						</li>
 
                         <li class="menu-item menu-item-archives" style="opacity: 1; transform: translateY(0px);">
 
@@ -193,6 +206,7 @@
                                         <span class="site-state-item-name">标签</span>
                                     </a>
                                 </div>
+								
 
                             </nav>
 
@@ -205,12 +219,6 @@
 
                             <div class="links-of-author motion-element">
 
-                                <span class="links-of-author-item">
-                                        <a href="#" target="_blank" title="GitHub">
-                                            <i class="fa fa-fw fa-github"></i>
-                                            GitHub
-                                        </a>
-                                  </span>
 
                                 <span class="links-of-author-item">
                                     <a href="#" target="_blank" title="知乎">
@@ -225,6 +233,8 @@
                                         博客
                                     </a>
                                 </span>
+								
+								
 
                             </div>
 

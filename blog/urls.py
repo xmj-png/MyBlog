@@ -17,7 +17,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.views.static import serve
 
-from myblog.views import IndexView, ArichiveView, TagView, TagDetailView, BlogDetailView, AddCommentView, CategoryDetaiView, MySearchView
+from myblog.views import MyMusic, IndexView, ArichiveView, TagView, TagDetailView, BlogDetailView, AddCommentView, CategoryDetaiView, MySearchView
 from myblog.feeds import BlogRssFeed
 from blog.settings import STATIC_ROOT
 from myblog import views
@@ -37,6 +37,7 @@ urlpatterns = [
     #添加静态文件的访问处理函数
     url(r'^static/(?P<path>.*)/$', serve, {'document_root': STATIC_ROOT}),
     url(r'^pic_show/myblog1986(\d+)21xmj20200820$', views.pic_show),
+    url(r'^music/$', views.listenMyMusic),
 
 ]
 

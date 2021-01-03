@@ -1,5 +1,6 @@
 import markdown
-
+import requests
+import json
 from django.shortcuts import render, get_object_or_404
 from django.views import View
 from django.http import HttpResponse
@@ -9,6 +10,72 @@ from haystack.views import SearchView
 from blog.settings import HAYSTACK_SEARCH_RESULTS_PER_PAGE
 from myblog.models import Blog, Category, Tag, Comment, Counts, PicTest
 from myblog.forms import CommentForm
+
+
+class MyMusic(View):
+    """
+    音乐
+    """
+    def listenMusic(self):
+
+        # music_name = request.POST.get("music")
+        # print("搜索的歌名{0}".format(music_name))
+        #
+        # headers = {
+        #
+        #     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
+        #                   "Chrome/85.0.4183.102 Safari/537.36",
+        #     "Cookie": "Hm_lvt_cdb524f42f0ce19b169a8071123a4797=1600350844; _ga=GA1.2.97377989.1600350844; _"
+        #               "gid=GA1.2.457605519.1600350844; gtoken=vMWeZ4vagWbM; "
+        #               "gid=2f544fca-5915-4a8a-be29-fda86e9daf20; Hm_lpvt_cdb524f42f0ce19b169a8071123a4797=1600353178; "
+        #               "kw_token=HTBQ3W7JRRP",
+        #     "Referer": "http://www.kuwo.cn/search/list?key=%E5%BD%92%E5%8E%BB%E6%9D%A5%E5%85%AE",
+        #     "csrf": "HTBQ3W7JRRP",
+        # }
+        # params = {
+        #     "key": music_name,
+        #     "pn": "1",
+        #     "rn": "3",
+        #     "httpsStatus": "1",
+        #     "reqId": "cc337fa0-e856-11ea-8e2d-ab61b365fb50",
+        # }
+        # url = "http://www.kuwo.cn/api/www/search/searchMusicBykeyWord?"
+        # # response = apishop_send_request('get', url=url, params=params, headers=headers)
+        # response = requests.request('get',url=url,params=params,headers=headers)
+        # response.encoding = "utf-8"
+        # text = response.text
+        # json_list = json.loads(text)
+        # print(json_list)
+        # if json_list['code'] == 200:
+        #     music_data = json_list["data"]["list"]
+        #     music_list = []
+        #     for i in music_data:
+        #         music_name = i["name"]
+        #
+        #         music_singer = i["artist"]
+        #
+        #         rid = i["rid"]
+        #
+        #         api_music = "http://www.kuwo.cn/url?format=mp3&rid={}&response=url&type=convert_" \
+        #                     "url3&br=128kmp3&from=web&t=1600358748184&httpsStatus=1&" \
+        #                     "reqId=a67e85c0-f8ff-11ea-9aba-3f184fbead08".format(rid)
+        #
+        #         api_res = requests.get(url=api_music)
+        #
+        #         music_url = json.loads(api_res.text)["url"]
+        #
+        #         print("歌名：%s  \t\t 歌手：%s" % (music_name, music_singer))
+        #         music_dict = {}
+        #         music_dict["name"] = music_name
+        #         music_dict["url"] = music_url
+        #         music_dict["singer"] = music_singer
+        #         music_list.append(music_dict)
+        #         print(music_list)
+        #     return render(request, 'music.html', {"music_list": music_list})
+        # else:
+        #     return render(request, 'music.html')
+        return HttpResponse("OK")
+
 
 
 class IndexView(View):
@@ -260,6 +327,65 @@ def pic_show(request, id):
     pic = PicTest.objects.get(pk=id)
     context = {'pic': pic}
     return render(request, 'pic_show.html', context)
+
+def listenMyMusic(request):
+
+    music_name = request.POST.get("music")
+    print("搜索的歌名{0}".format(music_name))
+
+    headers = {
+
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
+                      "Chrome/85.0.4183.102 Safari/537.36",
+        "Cookie": "Hm_lvt_cdb524f42f0ce19b169a8071123a4797=1600350844; _ga=GA1.2.97377989.1600350844; _"
+                  "gid=GA1.2.457605519.1600350844; gtoken=vMWeZ4vagWbM; "
+                  "gid=2f544fca-5915-4a8a-be29-fda86e9daf20; Hm_lpvt_cdb524f42f0ce19b169a8071123a4797=1600353178; "
+                  "kw_token=HTBQ3W7JRRP",
+        "Referer": "http://www.kuwo.cn/search/list?key=%E5%BD%92%E5%8E%BB%E6%9D%A5%E5%85%AE",
+        "csrf": "HTBQ3W7JRRP",
+    }
+    params = {
+        "key": music_name,
+        "pn": "1",
+        "rn": "10",
+        "httpsStatus": "1",
+        "reqId": "cc337fa0-e856-11ea-8e2d-ab61b365fb50",
+    }
+    url = "http://www.kuwo.cn/api/www/search/searchMusicBykeyWord?"
+    # response = apishop_send_request('get', url=url, params=params, headers=headers)
+    response = requests.request('get',url=url,params=params,headers=headers)
+    response.encoding = "utf-8"
+    text = response.text
+    json_list = json.loads(text)
+    print(json_list)
+    if json_list['code'] == 200:
+        music_data = json_list["data"]["list"]
+        music_list = []
+        for i in music_data:
+            music_name = i["name"]
+
+            music_singer = i["artist"]
+
+            rid = i["rid"]
+
+            api_music = "http://www.kuwo.cn/url?format=mp3&rid={}&response=url&type=convert_" \
+                        "url3&br=128kmp3&from=web&t=1600358748184&httpsStatus=1&" \
+                        "reqId=a67e85c0-f8ff-11ea-9aba-3f184fbead08".format(rid)
+
+            api_res = requests.get(url=api_music)
+
+            music_url = json.loads(api_res.text)["url"]
+
+            print("歌名：%s  \t\t 歌手：%s" % (music_name, music_singer))
+            music_dict = {}
+            music_dict["name"] = music_name
+            music_dict["url"] = music_url
+            music_dict["singer"] = music_singer
+            music_list.append(music_dict)
+            print(music_list)
+        return render(request, 'music.html', {"music_list": music_list})
+    else:
+        return render(request, 'music.html')
 
 
 #配置404 500错误页面
