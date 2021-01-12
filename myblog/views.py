@@ -339,7 +339,7 @@ def MyStep(request):
     next_year = next_time.date().year
     next_month = next_time.date().month
     next_day = next_time.date().day
-    # 获取明天3点时间
+    # 获取明天5点时间
     next_time = datetime.datetime.strptime(str(next_year) + "-" + str(next_month) + "-" + str(next_day) + " 17:00:00",
                                            "%Y-%m-%d %H:%M:%S")
     print(next_time)
